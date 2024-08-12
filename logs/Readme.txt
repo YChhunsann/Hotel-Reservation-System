@@ -1,1 +1,0 @@
-Log or output should be in this folder
