@@ -3,24 +3,18 @@ package sample.manager.ManagerPages.RoomInfoEdit;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import sample._BackEnd.CommonTask;
-import sample._BackEnd.DBConnection;
-import sample._BackEnd.TableView.ManagerRoomTable;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static sample._BackEnd.DBConnection.closeConnections;
 import static sample._BackEnd.DBConnection.getConnections;
-import static sample.customer.Login.UserLogin.currentCustomerNID;
 
 @SuppressWarnings("unused")
 public class RoomInfoEdit implements Initializable {
@@ -43,7 +37,7 @@ public class RoomInfoEdit implements Initializable {
         Connection connection = getConnections();
         try {
             if (!connection.isClosed()) {
-                String sql = "UPDATE RoomInfo SET TYPE = ?, CAPACITY = ?, PRICE_DAY = ?, STATUS = ? where ROOM_NO = ?";
+                String sql = "UPDATE hms0.roominfo SET ROOMTYPE = ?, CAPACITY = ?, PRICEDAY = ?, STATUS = ? where ROOMNO = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, roomTypeField.getText());
                 statement.setString(2, capacityField.getText());

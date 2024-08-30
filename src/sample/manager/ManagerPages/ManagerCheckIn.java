@@ -6,16 +6,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import sample._BackEnd.CommonTask;
 import sample._BackEnd.DBConnection;
-import sample._BackEnd.TableView.AdminCustomerTable;
 import sample._BackEnd.TableView.ManagerCustomerTable;
 
-import javax.swing.*;
-import java.awt.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -69,14 +65,14 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
             Connection connection = DBConnection.getConnections();
             try {
                 if (!connection.isClosed()) {
-                    String sql = "SELECT * FROM ROOMINFO WHERE ROOM_NO = ?";
+                    String sql = "SELECT * FROM hms0.roominfo WHERE ROOMNO = ?";
                     PreparedStatement statement = connection.prepareStatement(sql);
                     statement.setString(1, roomNo);
                     ResultSet resultSet = statement.executeQuery();
                     if (resultSet.next()) {
                         String roomCapacity = resultSet.getString("CAPACITY");
-                        String roomType = resultSet.getString("TYPE");
-                        String roomPriceDay = resultSet.getString("PRICE_DAY");
+                        String roomType = resultSet.getString("ROOMTYPE");
+                        String roomPriceDay = resultSet.getString("PRICEDAY");
 
                         roomCapacityField.setText(roomCapacity);
                         roomPriceField.setText(roomPriceDay);
@@ -101,12 +97,12 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
         Connection connection = DBConnection.getConnections();
         try {
             if (!connection.isClosed()) {
-                String sql = "SELECT * FROM ROOMINFO WHERE STATUS = ?";
+                String sql = "SELECT * FROM hms0.roominfo WHERE STATUS = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, "Available");
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    rooms.add(resultSet.getString("ROOM_NO"));
+                    rooms.add(resultSet.getString("ROOMNO"));
                 }
             }
         } catch (SQLException e) {
@@ -122,7 +118,7 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
         Connection connection = getConnections();
         try {
             if (!connection.isClosed()) {
-                String sql = "SELECT * FROM CUSTOMERINFO ORDER BY NID";
+                String sql = "SELECT * FROM hms0.customerinfo ORDER BY NID";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
@@ -175,7 +171,7 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
         if (name.isEmpty() || RoomNo.equals("null") || CheckInDate.equals("null")) {
             CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field can't be empty!");
         } else {
-            String sql = "INSERT INTO CHECKINOUTINFO (NAME, NID, EMAIL, PHONE, ADDRESS, ROOMNO, CHECKEDIN, ROOMTYPE, CAPACITY, PRICEDAY) VALUES(?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO hms0.checkinoutinfo (NAME, NID, EMAIL, PHONE, ADDRESS, ROOMNO, CHECKEDIN, ROOMTYPE, CAPACITY, PRICEDAY) VALUES(?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, NID);
@@ -189,7 +185,7 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
             preparedStatement.setString(10, roomPrice);
             try {
                 preparedStatement.execute();
-                String sql1 = "UPDATE ROOMINFO SET STATUS = 'Booked' WHERE ROOM_NO = ?";
+                String sql1 = "UPDATE hms0.roominfo SET STATUS = 'Booked' WHERE ROOMNO = ?";
                 PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
                 preparedStatement1.setString(1, RoomNo);
                 preparedStatement1.execute();

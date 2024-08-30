@@ -68,7 +68,7 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
                 || roomStatus.equals("null")) {
             CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field can't be empty!");
         } else {
-            String sql = "INSERT INTO ROOMINFO (ROOM_NO, TYPE, CAPACITY, PRICE_DAY, STATUS) VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO hms0.roominfo (ROOMNO, ROOMTYPE, CAPACITY, PRICEDAY, STATUS) VALUES(?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, roomNo);
             preparedStatement.setString(2, roomType);
@@ -106,14 +106,14 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
         Connection connection = getConnections();
         try {
             if (!connection.isClosed()) {
-                String sql = "SELECT * FROM ROOMINFO ORDER BY STATUS";
+                String sql = "SELECT * FROM hms0.roominfo ORDER BY STATUS";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    String ROOMNO = resultSet.getString("ROOM_NO"); // SQL COL NAMES NID
-                    String TYPE = resultSet.getString("TYPE");
+                    String ROOMNO = resultSet.getString("ROOMNO"); // SQL COL NAMES NID
+                    String TYPE = resultSet.getString("ROOMTYPE");
                     String CAPACITY = resultSet.getString("CAPACITY");
-                    String PRICEDAY = resultSet.getString("PRICE_DAY");
+                    String PRICEDAY = resultSet.getString("PRICEDAY");
                     String STATUS = resultSet.getString("STATUS");
 
                     ManagerRoomTable roomTablee = new ManagerRoomTable(ROOMNO, TYPE, CAPACITY, PRICEDAY, STATUS);
@@ -241,7 +241,7 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
             Connection connection = getConnections();
             try {
                 if (!connection.isClosed()) {
-                    String sql = "DELETE FROM RoomInfo where ROOM_NO=?";
+                    String sql = "DELETE FROM hms0.roominfo where ROOMNO=?";
                     PreparedStatement statement = connection.prepareStatement(sql);
                     statement.setString(1, managerRoomTable.getROOMNO());
 
