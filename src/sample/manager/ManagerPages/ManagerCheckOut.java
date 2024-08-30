@@ -97,7 +97,7 @@ public class ManagerCheckOut extends DBConnection implements Initializable {
         Connection connection = getConnections();
         try {
             if(!connection.isClosed()){
-                String sql = "SELECT * FROM CHECKINOUTINFO WHERE CHECKEDOUT IS NULL ORDER BY SI_NO DESC";
+                String sql = "SELECT * FROM hms0.checkinoutinfo WHERE CHECKEDOUT IS NULL ORDER BY SI_NO DESC";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()){
@@ -145,7 +145,7 @@ public class ManagerCheckOut extends DBConnection implements Initializable {
         if (siNo.equals("") || checkOutDate.equals("null") || daysTotal.isEmpty() || totalPrice.isEmpty()) {
             CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field can't be empty!");
         } else {
-            String sql = "UPDATE CHECKINOUTINFO SET CHECKEDOUT = ?, TOTALDAYS = ?, TOTALPRICE = ? WHERE SI_NO = ?";
+            String sql = "UPDATE hms0.checkinoutinfo SET CHECKEDOUT = ?, TOTALDAYS = ?, TOTALPRICE = ? WHERE SI_NO = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, checkOutDate);
             preparedStatement.setString(2, daysTotal);
@@ -154,7 +154,7 @@ public class ManagerCheckOut extends DBConnection implements Initializable {
             try {
                 preparedStatement.execute();
                 CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Check-Out Successful!");
-                String sql1 = "UPDATE ROOMINFO SET STATUS = ? WHERE ROOM_NO = ?";
+                String sql1 = "UPDATE hms0.roominfo SET STATUS = ? WHERE ROOMNO = ?";
                 PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
                 preparedStatement1.setString(1, "Available");
                 preparedStatement1.setString(2, roomNo);
