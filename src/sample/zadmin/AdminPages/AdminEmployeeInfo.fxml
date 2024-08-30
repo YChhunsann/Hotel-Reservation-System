@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="880.0" styleClass="bodybg" stylesheets="@CSS/imageSetAdmin.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.zadmin.AdminPages.AdminEmployeeInfo">
+<AnchorPane prefHeight="600.0" prefWidth="880.0" styleClass="bodybg" stylesheets="@CSS/newStyles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.zadmin.AdminPages.AdminEmployeeInfo">
    <children>
       <TextField fx:id="searchEmployeeTable" layoutX="345.0" layoutY="29.0" promptText="Search Employee Info" styleClass="searchBox" />
       <TableView fx:id="employeeTable" layoutX="14.0" layoutY="70.0" prefHeight="485.0" prefWidth="808.0">

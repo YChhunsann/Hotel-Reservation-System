@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="880.0" styleClass="bodybg" stylesheets="@CSS/imageSetAdmin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.zadmin.AdminPages.AdminEarningLog">
+<AnchorPane prefHeight="600.0" prefWidth="880.0" styleClass="bodybg" stylesheets="@CSS/newStyles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.zadmin.AdminPages.AdminEarningLog">
    <children>
       <TextField layoutX="345.0" layoutY="29.0" promptText="Search Earning Info" styleClass="searchBox" />
       <TableView fx:id="earningLogTable" layoutX="14.0" layoutY="70.0" prefHeight="485.0" prefWidth="807.0">
