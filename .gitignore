@@ -32,5 +32,5 @@ build/
 out/
 
 # Ignore DBConnection file specifically
-src/sample/_BackEnd/DBConnection.java
+./src/sample/_BackEnd/DBConnection.java
 
