@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable{
+@SuppressWarnings("unused")
+public class Controller implements Initializable {
 
     public ImageView closeWihdow;
     public JFXButton customerLoginBtn;
@@ -23,17 +24,19 @@ public class Controller implements Initializable{
 
     @FXML
     void Customer_Login(ActionEvent event) throws IOException {
-        CommonTask.pageNavigation("customer/Login/UserLogin.fxml",Main.stage,this.getClass(),"Customer Login", 600, 400);
+        CommonTask.pageNavigation("customer/Login/UserLogin.fxml", Main.stage, this.getClass(), "Customer Login", 600,
+                400);
     }
 
     @FXML
     void Manager_Login(ActionEvent event) throws IOException {
-        CommonTask.pageNavigation("manager/Login/ManagerLogin.fxml",Main.stage,this.getClass(),"Manager Login", 600, 400);
+        CommonTask.pageNavigation("manager/Login/ManagerLogin.fxml", Main.stage, this.getClass(), "Manager Login", 600,
+                400);
     }
 
     @FXML
     void Admin_Login(ActionEvent event) throws IOException {
-        CommonTask.pageNavigation("zadmin/Login/AdminLogin.fxml", Main.stage,this.getClass(),"Admin Login", 600, 400);
+        CommonTask.pageNavigation("zadmin/Login/AdminLogin.fxml", Main.stage, this.getClass(), "Admin Login", 600, 400);
     }
 
     @Override

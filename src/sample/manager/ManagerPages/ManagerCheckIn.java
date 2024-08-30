@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unused")
 public class ManagerCheckIn extends DBConnection implements Initializable {
     public TableView<ManagerCustomerTable> customerTable;
     public TableColumn<ManagerCustomerTable, String> nidCol;
@@ -43,14 +44,17 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
     public Label roomCapacityField;
     public Label roomPriceField;
     public DatePicker UserCheckIndate;
+    @SuppressWarnings("rawtypes")
     public JFXComboBox roomChoiceBox;
     private ObservableList<ManagerCustomerTable> TABLEROW = FXCollections.observableArrayList();
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         updateChoiceBox();
         TABLEROW.clear();
-        nameCol.setCellValueFactory(new PropertyValueFactory<ManagerCustomerTable, String>("Name")); //managerCustomerTable variable name
+        nameCol.setCellValueFactory(new PropertyValueFactory<ManagerCustomerTable, String>("Name")); // managerCustomerTable
+                                                                                                     // variable name
         nidCol.setCellValueFactory(new PropertyValueFactory<ManagerCustomerTable, String>("NID"));
         emailCol.setCellValueFactory(new PropertyValueFactory<ManagerCustomerTable, String>("Email"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<ManagerCustomerTable, String>("Phone"));
@@ -60,8 +64,8 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
     }
 
     private void setRoomInfoo(javafx.event.Event event) {
-        String roomNo = roomChoiceBox.getValue()+"";
-        if(!roomNo.equals("null")) {
+        String roomNo = roomChoiceBox.getValue() + "";
+        if (!roomNo.equals("null")) {
             Connection connection = DBConnection.getConnections();
             try {
                 if (!connection.isClosed()) {
@@ -89,22 +93,23 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void updateChoiceBox() {
         List<String> rooms = new ArrayList<String>();
 
         int count = 0;
         Connection connection = DBConnection.getConnections();
-        try{
-            if(!connection.isClosed()) {
+        try {
+            if (!connection.isClosed()) {
                 String sql = "SELECT * FROM ROOMINFO WHERE STATUS = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, "Available");
                 ResultSet resultSet = statement.executeQuery();
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     rooms.add(resultSet.getString("ROOM_NO"));
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DBConnection.closeConnections();
@@ -116,12 +121,12 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
     private void showCustomerTable() {
         Connection connection = getConnections();
         try {
-            if(!connection.isClosed()){
+            if (!connection.isClosed()) {
                 String sql = "SELECT * FROM CUSTOMERINFO ORDER BY NID";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()){
-                    String NID = resultSet.getString("NID"); //SQL COL NAMES NID
+                while (resultSet.next()) {
+                    String NID = resultSet.getString("NID"); // SQL COL NAMES NID
                     String NAME = resultSet.getString("NAME");
                     String EMAIL = resultSet.getString("EMAIL");
                     String PHONE = resultSet.getString("PHONE");
@@ -143,7 +148,7 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
 
     public void onSelect(MouseEvent mouseEvent) {
         selectIndex = customerTable.getSelectionModel().getSelectedIndex();
-        if(selectIndex <= -1){
+        if (selectIndex <= -1) {
             return;
         }
         nidField.setText(nidCol.getCellData(selectIndex).toString());
@@ -159,13 +164,13 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
         String Email = emailField.getText();
         String Phone = phoneField.getText();
         String Address = addressField.getText();
-        String RoomNo = roomChoiceBox.getValue()+"";
-        String CheckInDate = UserCheckIndate.getValue()+"";
+        String RoomNo = roomChoiceBox.getValue() + "";
+        String CheckInDate = UserCheckIndate.getValue() + "";
         String roomCapacity = roomCapacityField.getText();
         String roomType = roomTypeField.getText();
         String roomPrice = roomPriceField.getText();
-        System.out.println(roomCapacity +" "+roomType+" "+roomPrice);
-       // System.out.println(name+" "+RoomNo+" "+CheckInDate);
+        System.out.println(roomCapacity + " " + roomType + " " + roomPrice);
+        // System.out.println(name+" "+RoomNo+" "+CheckInDate);
         Connection connection = DBConnection.getConnections();
         if (name.isEmpty() || RoomNo.equals("null") || CheckInDate.equals("null")) {
             CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field can't be empty!");
@@ -182,14 +187,14 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
             preparedStatement.setString(8, roomType);
             preparedStatement.setString(9, roomCapacity);
             preparedStatement.setString(10, roomPrice);
-            try{
+            try {
                 preparedStatement.execute();
                 String sql1 = "UPDATE ROOMINFO SET STATUS = 'Booked' WHERE ROOM_NO = ?";
                 PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
                 preparedStatement1.setString(1, RoomNo);
                 preparedStatement1.execute();
                 CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Check-in Successful!");
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 CommonTask.showAlert(Alert.AlertType.ERROR, "Error", "SQL Exception found!");
             } finally {
                 DBConnection.closeConnections();
@@ -209,6 +214,6 @@ public class ManagerCheckIn extends DBConnection implements Initializable {
         roomCapacityField.setText("");
         roomPriceField.setText("");
         UserCheckIndate.getEditor().clear();
-//        roomChoiceBox.setValue(null);
+        // roomChoiceBox.setValue(null);
     }
 }

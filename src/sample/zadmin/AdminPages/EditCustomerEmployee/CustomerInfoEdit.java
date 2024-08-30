@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 
 import static sample.customer.Login.UserLogin.currentCustomerNID;
 
+@SuppressWarnings("unused")
 public class CustomerInfoEdit implements Initializable {
 
     public Button UserConfirm;
@@ -52,7 +53,8 @@ public class CustomerInfoEdit implements Initializable {
         String customerEmail = UserEmailEdit.getText();
         String customerPhone = UserPhoneEdit.getText();
         String customerAddress = UserAddressEdit.getText();
-        if (customerName.isEmpty() || customerNID.isEmpty() || customerPassword.isEmpty() || customerEmail.isEmpty() || customerAddress.isEmpty()) {
+        if (customerName.isEmpty() || customerNID.isEmpty() || customerPassword.isEmpty() || customerEmail.isEmpty()
+                || customerAddress.isEmpty()) {
             CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field can't be empty!");
         } else {
             String sql = "UPDATE CUSTOMERINFO SET NAME = ?, PASSWORD = ?, EMAIL = ?, PHONE = ?, ADDRESS = ? WHERE NID = ?";
@@ -63,13 +65,15 @@ public class CustomerInfoEdit implements Initializable {
             preparedStatementUpdate.setString(4, customerPhone);
             preparedStatementUpdate.setString(5, customerAddress);
             preparedStatementUpdate.setString(6, customerNID);
-            try{
+            try {
                 preparedStatementUpdate.execute();
-//                CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Update Successful!");
-//                CommonTask.pageNavigation("UserInfo.fxml", (Stage) UserConfirm.getScene().getWindow(),this.getClass(),"User Home", 550, 400);
+                // CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Update
+                // Successful!");
+                // CommonTask.pageNavigation("UserInfo.fxml", (Stage)
+                // UserConfirm.getScene().getWindow(),this.getClass(),"User Home", 550, 400);
                 Stage stage = (Stage) UserConfirm.getScene().getWindow();
                 stage.close();
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 CommonTask.showAlert(Alert.AlertType.ERROR, "Error", "Maybe Sql error!");
             } finally {
                 DBConnection.closeConnections();
@@ -82,18 +86,18 @@ public class CustomerInfoEdit implements Initializable {
 
     }
 
-    public void setCustomerInfo(AdminCustomerTable adminCustomerTable){
-                    UserNameEdit.setText(adminCustomerTable.getName());
-                    UserNidEdit.setText(adminCustomerTable.getNID());
-                    UserNidEdit.setDisable(true);
-                    UserEmailEdit.setText(adminCustomerTable.getEmail());
-                    UserPhoneEdit.setText(adminCustomerTable.getPhone());
-                    UserPassEdit.setText(adminCustomerTable.getPass());
-                    UserAddressEdit.setText(adminCustomerTable.getAddress());
+    public void setCustomerInfo(AdminCustomerTable adminCustomerTable) {
+        UserNameEdit.setText(adminCustomerTable.getName());
+        UserNidEdit.setText(adminCustomerTable.getNID());
+        UserNidEdit.setDisable(true);
+        UserEmailEdit.setText(adminCustomerTable.getEmail());
+        UserPhoneEdit.setText(adminCustomerTable.getPhone());
+        UserPassEdit.setText(adminCustomerTable.getPass());
+        UserAddressEdit.setText(adminCustomerTable.getAddress());
     }
 
     public void BackBtn(ActionEvent event) throws IOException {
         Stage stage = (Stage) UserConfirm.getScene().getWindow();
         stage.close();
-         }
+    }
 }

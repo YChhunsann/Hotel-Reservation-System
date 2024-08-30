@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
 
 import static sample.customer.Login.UserLogin.currentCustomerNID;
 
+@SuppressWarnings("unused")
 public class EmployeeInfoEdit implements Initializable {
 
     public Button UserConfirm;
@@ -53,7 +54,8 @@ public class EmployeeInfoEdit implements Initializable {
         String employeeEmail = UserEmailEdit.getText();
         String employeePhone = UserPhoneEdit.getText();
         String employeeAddress = UserAddressEdit.getText();
-        if (employeeName.isEmpty() || employeeNID.isEmpty() || employeePassword.isEmpty() || employeePhone.isEmpty() || employeeAddress.isEmpty()) {
+        if (employeeName.isEmpty() || employeeNID.isEmpty() || employeePassword.isEmpty() || employeePhone.isEmpty()
+                || employeeAddress.isEmpty()) {
             CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field can't be empty!");
         } else {
             String sql = "UPDATE EMPLOYEEINFO SET NAME = ?, PASSWORD = ?, EMAIL = ?, PHONE = ?, ADDRESS = ? WHERE NID = ?";
@@ -64,13 +66,15 @@ public class EmployeeInfoEdit implements Initializable {
             preparedStatementUpdate.setString(4, employeePhone);
             preparedStatementUpdate.setString(5, employeeAddress);
             preparedStatementUpdate.setString(6, employeeNID);
-            try{
+            try {
                 preparedStatementUpdate.execute();
-//                CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Update Successful!");
-//                CommonTask.pageNavigation("UserInfo.fxml", (Stage) UserConfirm.getScene().getWindow(),this.getClass(),"User Home", 550, 400);
+                // CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Update
+                // Successful!");
+                // CommonTask.pageNavigation("UserInfo.fxml", (Stage)
+                // UserConfirm.getScene().getWindow(),this.getClass(),"User Home", 550, 400);
                 Stage stage = (Stage) UserConfirm.getScene().getWindow();
                 stage.close();
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 CommonTask.showAlert(Alert.AlertType.ERROR, "Error", "Maybe Sql Error!");
             } finally {
                 DBConnection.closeConnections();
@@ -81,7 +85,6 @@ public class EmployeeInfoEdit implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
-
 
     public void BackBtn(ActionEvent event) throws IOException {
         Stage stage = (Stage) UserConfirm.getScene().getWindow();

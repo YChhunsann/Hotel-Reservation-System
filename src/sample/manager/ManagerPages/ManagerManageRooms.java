@@ -37,22 +37,22 @@ import static sample.Main.yyy;
 
 public class ManagerManageRooms extends DBConnection implements Initializable {
 
-    
-
     public TableView<ManagerRoomTable> roomTable;
     public TableColumn<ManagerRoomTable, String> roomNoCol;
     public TableColumn<ManagerRoomTable, String> roomTypeCol;
     public TableColumn<ManagerRoomTable, String> roomCapacityCol;
     public TableColumn<ManagerRoomTable, String> price_DayCol;
     public TableColumn<ManagerRoomTable, String> roomStatusCol;
+    @SuppressWarnings("rawtypes")
     public JFXComboBox roomStatusChoiceBox;
     public JFXTextField roomTypeField;
     public JFXTextField bedCapacityField;
     public JFXTextField price_dayField;
     public JFXTextField roomNoField;
+    @SuppressWarnings("rawtypes")
     public TableColumn actionCol;
 
-    private String[] roomStats = {"Available", "Unavailable"};
+    private String[] roomStats = { "Available", "Unavailable" };
 
     private ObservableList<ManagerRoomTable> TABLEROW = FXCollections.observableArrayList();
 
@@ -62,9 +62,10 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
         String bedCapacity = bedCapacityField.getText();
         String roomType = roomTypeField.getText();
         String price_day = price_dayField.getText();
-        String roomStatus = roomStatusChoiceBox.getValue()+"";
+        String roomStatus = roomStatusChoiceBox.getValue() + "";
 
-        if (roomNo.isEmpty() || bedCapacity.isEmpty()  || roomType.isEmpty() || price_day.isEmpty() || roomStatus.equals("null")) {
+        if (roomNo.isEmpty() || bedCapacity.isEmpty() || roomType.isEmpty() || price_day.isEmpty()
+                || roomStatus.equals("null")) {
             CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field can't be empty!");
         } else {
             String sql = "INSERT INTO ROOMINFO (ROOM_NO, TYPE, CAPACITY, PRICE_DAY, STATUS) VALUES(?,?,?,?,?)";
@@ -74,11 +75,11 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
             preparedStatement.setString(3, bedCapacity);
             preparedStatement.setString(4, price_day);
             preparedStatement.setString(5, roomStatus);
-            try{
+            try {
                 preparedStatement.execute();
                 CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Room Added Successfully!");
                 showRoomTable();
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 CommonTask.showAlert(Alert.AlertType.ERROR, "Error", "This Room no. already exists!");
             } finally {
                 closeConnections();
@@ -87,6 +88,7 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         roomStatusChoiceBox.getItems().setAll(roomStats);
@@ -99,16 +101,16 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
         actionButtons();
     }
 
-    public void showRoomTable(){
+    public void showRoomTable() {
         TABLEROW.clear();
         Connection connection = getConnections();
         try {
-            if(!connection.isClosed()){
+            if (!connection.isClosed()) {
                 String sql = "SELECT * FROM ROOMINFO ORDER BY STATUS";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()){
-                    String ROOMNO = resultSet.getString("ROOM_NO"); //SQL COL NAMES NID
+                while (resultSet.next()) {
+                    String ROOMNO = resultSet.getString("ROOM_NO"); // SQL COL NAMES NID
                     String TYPE = resultSet.getString("TYPE");
                     String CAPACITY = resultSet.getString("CAPACITY");
                     String PRICEDAY = resultSet.getString("PRICE_DAY");
@@ -127,119 +129,109 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void actionButtons() {
-        Callback<TableColumn<ManagerRoomTable, String>, TableCell<ManagerRoomTable, String>> cellCallback =
-                new Callback<TableColumn<ManagerRoomTable, String>, TableCell<ManagerRoomTable, String>>() {
+        Callback<TableColumn<ManagerRoomTable, String>, TableCell<ManagerRoomTable, String>> cellCallback = new Callback<TableColumn<ManagerRoomTable, String>, TableCell<ManagerRoomTable, String>>() {
+            @Override
+            public TableCell<ManagerRoomTable, String> call(TableColumn<ManagerRoomTable, String> param) {
+
+                TableCell<ManagerRoomTable, String> cell = new TableCell<ManagerRoomTable, String>() {
+
+                    FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                    FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+
+                    public HBox hBox = new HBox(25, editIcon, deleteIcon);
+
                     @Override
-                    public TableCell<ManagerRoomTable, String> call(TableColumn<ManagerRoomTable, String> param) {
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
 
-                        TableCell<ManagerRoomTable, String> cell = new TableCell<ManagerRoomTable, String>() {
+                            deleteIcon.setStyle(
+                                    " -fx-cursor: hand ;"
+                                            + "-glyph-size:20px;"
+                                            + "-fx-fill:#ffffff;");
 
-                            FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
-                            FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+                            deleteIcon.setOnMouseEntered((MouseEvent event) -> {
+                                deleteIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:khaki;");
+                            });
 
-                            public HBox hBox = new HBox(25, editIcon, deleteIcon);
+                            deleteIcon.setOnMouseExited((MouseEvent event2) -> {
+                                deleteIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:white;");
+                            });
 
-                            @Override
-                            protected void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty){
-                                    setGraphic(null);
-                                    setText(null);
-                                }else{
+                            deleteIcon.setOnMouseClicked((MouseEvent event2) -> {
+                                deleteIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:lightgreen;");
 
-                                    deleteIcon.setStyle(
-                                            " -fx-cursor: hand ;"
-                                                    + "-glyph-size:20px;"
-                                                    + "-fx-fill:#ffffff;"
-                                    );
+                                ManagerRoomTable managerRoomTable = getTableView().getItems().get(getIndex());
+                                tableRowDelete(managerRoomTable);
 
-                                    deleteIcon.setOnMouseEntered((MouseEvent event) ->{
-                                        deleteIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        +"-fx-fill:khaki;"
-                                        );
-                                    });
+                            });
 
-                                    deleteIcon.setOnMouseExited((MouseEvent event2) ->{
-                                        deleteIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:white;"
-                                        );
-                                    });
+                            editIcon.setStyle(
+                                    " -fx-cursor: hand ;"
+                                            + "-glyph-size:20px;"
+                                            + "-fx-fill:#ffffff;");
 
-                                    deleteIcon.setOnMouseClicked((MouseEvent event2) ->{
-                                        deleteIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        +"-fx-fill:lightgreen;"
-                                        );
+                            editIcon.setOnMouseEntered((MouseEvent event) -> {
+                                editIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:khaki;");
+                            });
 
-                                        ManagerRoomTable managerRoomTable = getTableView().getItems().get(getIndex());
-                                        tableRowDelete(managerRoomTable);
+                            editIcon.setOnMouseExited((MouseEvent event2) -> {
+                                editIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:white;");
+                            });
 
-                                    });
-
-                                    editIcon.setStyle(
-                                            " -fx-cursor: hand ;"
-                                                    + "-glyph-size:20px;"
-                                                    + "-fx-fill:#ffffff;"
-                                    );
-
-                                    editIcon.setOnMouseEntered((MouseEvent event) ->{
-                                        editIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        +"-fx-fill:khaki;"
-                                        );
-                                    });
-
-                                    editIcon.setOnMouseExited((MouseEvent event2) ->{
-                                        editIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:white;"
-                                        );
-                                    });
-
-                                    editIcon.setOnMouseClicked((MouseEvent event2) ->{
-                                        editIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        +"-fx-fill:lightgreen;"
-                                        );
-                                        ManagerRoomTable managerRoomTable = getTableView().getItems().get(getIndex());
-//                                        System.out.println(managerRoomTable.getROOMNO());
-                                        try {
-                                            editTableRowInfo(managerRoomTable);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    });
-
-
-
-                                    hBox.setStyle("-fx-alignment:center");
-//                                    hBox.setMaxWidth(40);
-//                                    HBox.setMargin(editIcon, new Insets(2, 10, 0, 10));
-//                                    HBox.setMargin(deleteIcon, new Insets(2, 10, 0, 10));
-                                    setGraphic(hBox);
+                            editIcon.setOnMouseClicked((MouseEvent event2) -> {
+                                editIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:lightgreen;");
+                                ManagerRoomTable managerRoomTable = getTableView().getItems().get(getIndex());
+                                // System.out.println(managerRoomTable.getROOMNO());
+                                try {
+                                    editTableRowInfo(managerRoomTable);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
-                            }
-                        };
 
-                        return cell;
+                            });
+
+                            hBox.setStyle("-fx-alignment:center");
+                            // hBox.setMaxWidth(40);
+                            // HBox.setMargin(editIcon, new Insets(2, 10, 0, 10));
+                            // HBox.setMargin(deleteIcon, new Insets(2, 10, 0, 10));
+                            setGraphic(hBox);
+                        }
                     }
                 };
+
+                return cell;
+            }
+        };
         actionCol.setCellFactory(cellCallback);
     }
 
@@ -255,7 +247,8 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
 
                     statement.execute();
 
-                    CommonTask.showAlert(Alert.AlertType.INFORMATION, "Delete Operation Successfull", "Room No " + managerRoomTable.getROOMNO() + " is deleted from database!");
+                    CommonTask.showAlert(Alert.AlertType.INFORMATION, "Delete Operation Successfull",
+                            "Room No " + managerRoomTable.getROOMNO() + " is deleted from database!");
 
                     roomTable.getItems().remove(managerRoomTable);
                 }
@@ -265,7 +258,8 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
                 closeConnections();
             }
         } else {
-            CommonTask.showAlert(Alert.AlertType.WARNING, "Delete Unsuccessful", "Can't delete. It's currently booked by a customer.");
+            CommonTask.showAlert(Alert.AlertType.WARNING, "Delete Unsuccessful",
+                    "Can't delete. It's currently booked by a customer.");
         }
     }
 
@@ -275,13 +269,18 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
             try {
                 if (!connection.isClosed()) {
                     FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("/sample/manager/ManagerPages/RoomInfoEdit/roomInfoEdit.fxml"));
+                    loader.setLocation(
+                            getClass().getResource("/sample/manager/ManagerPages/RoomInfoEdit/roomInfoEdit.fxml"));
                     Parent viewContact = loader.load();
                     Scene scene = new Scene(viewContact);
                     // update information
                     RoomInfoEdit roomInfoEdit = loader.getController();
-                    roomInfoEdit.setRoomInfo(managerRoomTable.getROOMNO(), managerRoomTable.getTYPE(), managerRoomTable.getCAPACITY(), managerRoomTable.getPRICEDAY(), managerRoomTable.getSTATUS());
-//                    System.out.println(managerRoomTable.getROOMNO() + " " + managerRoomTable.getTYPE() + " " + managerRoomTable.getCAPACITY() + " " + managerRoomTable.getPRICEDAY());
+                    roomInfoEdit.setRoomInfo(managerRoomTable.getROOMNO(), managerRoomTable.getTYPE(),
+                            managerRoomTable.getCAPACITY(), managerRoomTable.getPRICEDAY(),
+                            managerRoomTable.getSTATUS());
+                    // System.out.println(managerRoomTable.getROOMNO() + " " +
+                    // managerRoomTable.getTYPE() + " " + managerRoomTable.getCAPACITY() + " " +
+                    // managerRoomTable.getPRICEDAY());
                     Stage window = new Stage();
                     window.setScene(scene);
                     window.initStyle(StageStyle.UNDECORATED);
@@ -310,14 +309,13 @@ public class ManagerManageRooms extends DBConnection implements Initializable {
             yyy = event.getSceneY();
         });
         root.setOnMouseDragged(event -> {
-//            if(event.getButton() == MouseButton.SECONDARY) {
+            // if(event.getButton() == MouseButton.SECONDARY) {
             primaryStage.setX(event.getScreenX() - xxx);
             primaryStage.setY(event.getScreenY() - yyy);
             x.set(primaryStage.getX());
             y.set(primaryStage.getY());
-//            }
+            // }
         });
     }
 
 }
-

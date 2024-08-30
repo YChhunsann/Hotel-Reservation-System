@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unused")
 public class UserLogin implements Initializable {
 
     public TextField customerNIDField;
@@ -41,8 +42,10 @@ public class UserLogin implements Initializable {
         try {
 
             if (customerNID.isEmpty() == true || customerPass.isEmpty() == true) {
-//                CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field Can't be Empty!");
-                CommonTask.showJFXAlert(rootPane, rootAnchorPane, "warning", "Warning!", "Field Can't be Empty!", JFXDialog.DialogTransition.CENTER);
+                // CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field Can't be
+                // Empty!");
+                CommonTask.showJFXAlert(rootPane, rootAnchorPane, "warning", "Warning!", "Field Can't be Empty!",
+                        JFXDialog.DialogTransition.CENTER);
             } else {
                 String sql = "SELECT * FROM CUSTOMERINFO WHERE NID = ? AND PASSWORD = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -50,25 +53,31 @@ public class UserLogin implements Initializable {
                 preparedStatement.setString(2, customerPass);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
-                    //CommonTask.showAlert(Alert.AlertType.INFORMATION, "Login Success!", "Successfully Logged In!");
-                    CommonTask.pageNavigation("/sample/customer/CustomerPages/UserMain.fxml", Main.stage, this.getClass(), "User Dashboard", 800, 400);
+                    // CommonTask.showAlert(Alert.AlertType.INFORMATION, "Login Success!",
+                    // "Successfully Logged In!");
+                    CommonTask.pageNavigation("/sample/customer/CustomerPages/UserMain.fxml", Main.stage,
+                            this.getClass(), "User Dashboard", 800, 400);
                 } else {
-                    CommonTask.showJFXAlert(rootPane, rootAnchorPane, "warning", "Login Failed!", "Wrong UserNid/Password !", JFXDialog.DialogTransition.CENTER);
+                    CommonTask.showJFXAlert(rootPane, rootAnchorPane, "warning", "Login Failed!",
+                            "Wrong UserNid/Password !", JFXDialog.DialogTransition.CENTER);
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DBConnection.closeConnections();
         }
     }
+
     @FXML
     public void UserSignup(ActionEvent mouseEvent) throws IOException {
-        CommonTask.pageNavigation("UserSignup.fxml", Main.stage ,this.getClass(),"User Signup", 600, 400);
+        CommonTask.pageNavigation("UserSignup.fxml", Main.stage, this.getClass(), "User Signup", 600, 400);
     }
-@FXML
+
+    @FXML
     public void BackToMain(ActionEvent mouseEvent) throws IOException {
-        CommonTask.pageNavigation("/sample/sample.fxml", Main.stage,this.getClass(),"Hotel Management System", 600, 400);
+        CommonTask.pageNavigation("/sample/sample.fxml", Main.stage, this.getClass(), "Hotel Management System", 600,
+                400);
     }
 
     @Override
@@ -76,7 +85,6 @@ public class UserLogin implements Initializable {
         closeWindow.setOnMouseClicked(event -> {
             System.exit(0);
         });
-
 
     }
 }

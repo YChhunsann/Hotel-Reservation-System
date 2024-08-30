@@ -42,6 +42,7 @@ public class AdminEmployeeInfo extends DBConnection implements Initializable {
     public TableColumn<AdminEmployeeTable, String> phoneCol;
     public TableColumn<AdminEmployeeTable, String> addressCol;
     public TableColumn<AdminEmployeeTable, String> passCol;
+    @SuppressWarnings("rawtypes")
     public TableColumn actionCol;
 
     private ObservableList<AdminEmployeeTable> TABLEROW = FXCollections.observableArrayList();
@@ -49,7 +50,8 @@ public class AdminEmployeeInfo extends DBConnection implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         TABLEROW.clear();
-        nameCol.setCellValueFactory(new PropertyValueFactory<AdminEmployeeTable, String>("Name")); //adminEmployeeTable variable name
+        nameCol.setCellValueFactory(new PropertyValueFactory<AdminEmployeeTable, String>("Name")); // adminEmployeeTable
+                                                                                                   // variable name
         nidCol.setCellValueFactory(new PropertyValueFactory<AdminEmployeeTable, String>("NID"));
         emailCol.setCellValueFactory(new PropertyValueFactory<AdminEmployeeTable, String>("Email"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<AdminEmployeeTable, String>("Phone"));
@@ -68,7 +70,7 @@ public class AdminEmployeeInfo extends DBConnection implements Initializable {
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    String NID = resultSet.getString("NID"); //SQL COL NAMES NID
+                    String NID = resultSet.getString("NID"); // SQL COL NAMES NID
                     String NAME = resultSet.getString("NAME");
                     String EMAIL = resultSet.getString("EMAIL");
                     String PHONE = resultSet.getString("PHONE");
@@ -88,115 +90,106 @@ public class AdminEmployeeInfo extends DBConnection implements Initializable {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void actionButtons() {
-        Callback<TableColumn<AdminEmployeeTable, String>, TableCell<AdminEmployeeTable, String>> cellCallback =
-                new Callback<TableColumn<AdminEmployeeTable, String>, TableCell<AdminEmployeeTable, String>>() {
+        Callback<TableColumn<AdminEmployeeTable, String>, TableCell<AdminEmployeeTable, String>> cellCallback = new Callback<TableColumn<AdminEmployeeTable, String>, TableCell<AdminEmployeeTable, String>>() {
+            @Override
+            public TableCell<AdminEmployeeTable, String> call(TableColumn<AdminEmployeeTable, String> param) {
+
+                TableCell<AdminEmployeeTable, String> cell = new TableCell<AdminEmployeeTable, String>() {
+
+                    FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                    FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+
+                    public HBox hBox = new HBox(25, editIcon, deleteIcon);
+
                     @Override
-                    public TableCell<AdminEmployeeTable, String> call(TableColumn<AdminEmployeeTable, String> param) {
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
 
-                        TableCell<AdminEmployeeTable, String> cell = new TableCell<AdminEmployeeTable, String>() {
+                            deleteIcon.setStyle(
+                                    " -fx-cursor: hand ;"
+                                            + "-glyph-size:20px;"
+                                            + "-fx-fill:#ffffff;");
 
-                            FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
-                            FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+                            deleteIcon.setOnMouseEntered((MouseEvent event) -> {
+                                deleteIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:khaki;");
+                            });
 
-                            public HBox hBox = new HBox(25, editIcon, deleteIcon);
+                            deleteIcon.setOnMouseExited((MouseEvent event2) -> {
+                                deleteIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:white;");
+                            });
 
-                            @Override
-                            protected void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                    setText(null);
-                                } else {
+                            deleteIcon.setOnMouseClicked((MouseEvent event2) -> {
+                                deleteIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:lightgreen;");
 
-                                    deleteIcon.setStyle(
-                                            " -fx-cursor: hand ;"
-                                                    + "-glyph-size:20px;"
-                                                    + "-fx-fill:#ffffff;"
-                                    );
+                                AdminEmployeeTable adminEmployeeTable = getTableView().getItems().get(getIndex());
+                                tableRowDelete(adminEmployeeTable);
 
-                                    deleteIcon.setOnMouseEntered((MouseEvent event) -> {
-                                        deleteIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:khaki;"
-                                        );
-                                    });
+                            });
 
-                                    deleteIcon.setOnMouseExited((MouseEvent event2) -> {
-                                        deleteIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:white;"
-                                        );
-                                    });
+                            editIcon.setStyle(
+                                    " -fx-cursor: hand ;"
+                                            + "-glyph-size:20px;"
+                                            + "-fx-fill:#ffffff;");
 
-                                    deleteIcon.setOnMouseClicked((MouseEvent event2) -> {
-                                        deleteIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:lightgreen;"
-                                        );
+                            editIcon.setOnMouseEntered((MouseEvent event) -> {
+                                editIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:khaki;");
+                            });
 
-                                        AdminEmployeeTable adminEmployeeTable = getTableView().getItems().get(getIndex());
-                                        tableRowDelete(adminEmployeeTable);
+                            editIcon.setOnMouseExited((MouseEvent event2) -> {
+                                editIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:white;");
+                            });
 
-                                    });
+                            editIcon.setOnMouseClicked((MouseEvent event2) -> {
+                                editIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:lightgreen;");
 
-                                    editIcon.setStyle(
-                                            " -fx-cursor: hand ;"
-                                                    + "-glyph-size:20px;"
-                                                    + "-fx-fill:#ffffff;"
-                                    );
+                                // edit in new stage, need to do some code+fxml file stuff ahh
+                                AdminEmployeeTable adminEmployeeTable = getTableView().getItems().get(getIndex());
+                                // System.out.println(managerRoomTable.getROOMNO());
+                                editTableRowInfo(adminEmployeeTable);
+                            });
 
-                                    editIcon.setOnMouseEntered((MouseEvent event) -> {
-                                        editIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:khaki;"
-                                        );
-                                    });
-
-                                    editIcon.setOnMouseExited((MouseEvent event2) -> {
-                                        editIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:white;"
-                                        );
-                                    });
-
-                                    editIcon.setOnMouseClicked((MouseEvent event2) -> {
-                                        editIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:lightgreen;"
-                                        );
-
-                                        //edit in new stage, need to do some code+fxml file stuff ahh
-                                        AdminEmployeeTable adminEmployeeTable = getTableView().getItems().get(getIndex());
-//                                        System.out.println(managerRoomTable.getROOMNO());
-                                        editTableRowInfo(adminEmployeeTable);
-                                    });
-
-
-                                    hBox.setStyle("-fx-alignment:center");
-//                                    hBox.setMaxWidth(40);
-//                                    HBox.setMargin(editIcon, new Insets(2, 10, 0, 10));
-//                                    HBox.setMargin(deleteIcon, new Insets(2, 10, 0, 10));
-                                    setGraphic(hBox);
-                                }
-                            }
-                        };
-
-                        return cell;
+                            hBox.setStyle("-fx-alignment:center");
+                            // hBox.setMaxWidth(40);
+                            // HBox.setMargin(editIcon, new Insets(2, 10, 0, 10));
+                            // HBox.setMargin(deleteIcon, new Insets(2, 10, 0, 10));
+                            setGraphic(hBox);
+                        }
                     }
                 };
+
+                return cell;
+            }
+        };
         actionCol.setCellFactory(cellCallback);
     }
 
@@ -205,13 +198,16 @@ public class AdminEmployeeInfo extends DBConnection implements Initializable {
         try {
             if (!connection.isClosed()) {
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/sample/zadmin/AdminPages/EditCustomerEmployee/EmployeeInfoEdit.fxml"));
+                loader.setLocation(
+                        getClass().getResource("/sample/zadmin/AdminPages/EditCustomerEmployee/EmployeeInfoEdit.fxml"));
                 Parent viewContact = loader.load();
                 Scene scene = new Scene(viewContact);
                 // update information
                 EmployeeInfoEdit employeeInfoEdit = loader.getController();
                 employeeInfoEdit.setEmployeeInfo(adminEmployeeTable);
-//                    System.out.println(managerRoomTable.getROOMNO() + " " + managerRoomTable.getTYPE() + " " + managerRoomTable.getCAPACITY() + " " + managerRoomTable.getPRICEDAY());
+                // System.out.println(managerRoomTable.getROOMNO() + " " +
+                // managerRoomTable.getTYPE() + " " + managerRoomTable.getCAPACITY() + " " +
+                // managerRoomTable.getPRICEDAY());
                 Stage window = new Stage();
                 window.setScene(scene);
                 window.initStyle(StageStyle.UNDECORATED);
@@ -237,18 +233,18 @@ public class AdminEmployeeInfo extends DBConnection implements Initializable {
             yyy = event.getSceneY();
         });
         root.setOnMouseDragged(event -> {
-//            if(event.getButton() == MouseButton.SECONDARY) {
+            // if(event.getButton() == MouseButton.SECONDARY) {
             primaryStage.setX(event.getScreenX() - xxx);
             primaryStage.setY(event.getScreenY() - yyy);
             x.set(primaryStage.getX());
             y.set(primaryStage.getY());
-//            }
+            // }
         });
     }
 
     public void tableRowDelete(AdminEmployeeTable adminEmployeeTable) {
-//        String roomStatus = managerRoomTable.getSTATUS();
-//        if (!roomStatus.equals("Booked")) {
+        // String roomStatus = managerRoomTable.getSTATUS();
+        // if (!roomStatus.equals("Booked")) {
         Connection connection = getConnections();
         try {
             if (!connection.isClosed()) {
@@ -256,9 +252,10 @@ public class AdminEmployeeInfo extends DBConnection implements Initializable {
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, adminEmployeeTable.getNID());
                 statement.execute();
-                CommonTask.showAlert(Alert.AlertType.INFORMATION, "Delete Operation Successful", "Employee Named " + adminEmployeeTable.getName() + " is deleted from database!");
+                CommonTask.showAlert(Alert.AlertType.INFORMATION, "Delete Operation Successful",
+                        "Employee Named " + adminEmployeeTable.getName() + " is deleted from database!");
 
-                //showTableInformation();
+                // showTableInformation();
                 employeeTable.getItems().remove(adminEmployeeTable);
             }
         } catch (SQLException throwables) {

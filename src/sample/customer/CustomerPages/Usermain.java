@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static sample._BackEnd.CommonTask.newStage;
 
+@SuppressWarnings("unused")
 public class Usermain implements Initializable {
 
     public BorderPane borderpane;
@@ -53,28 +54,20 @@ public class Usermain implements Initializable {
         ((Stage) (node).getScene().getWindow()).setIconified(true);
     }
 
-    public void windowLoad(String URL)
-    {
-        try
-        {
+    public void windowLoad(String URL) {
+        try {
             AnchorPane pane = FXMLLoader.load(getClass().getResource(URL));
             borderpane.setCenter(pane);
-        }
-        catch(Exception err)
-        {
+        } catch (Exception err) {
             System.out.println("Problem : " + err);
         }
     }
 
-    public void windowLoadStackPane(String URL)
-    {
-        try
-        {
+    public void windowLoadStackPane(String URL) {
+        try {
             StackPane pane = FXMLLoader.load(getClass().getResource(URL));
             borderpane.setCenter(pane);
-        }
-        catch(Exception err)
-        {
+        } catch (Exception err) {
             System.out.println("Problem : " + err);
         }
     }

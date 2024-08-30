@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unused")
 public class AdminTotalEarnings extends DBConnection implements Initializable {
     public Label earnMonth;
     public Label earnYear;
@@ -41,43 +42,43 @@ public class AdminTotalEarnings extends DBConnection implements Initializable {
         list.add(new PieChart.Data("Earned This Month", currMonthSum));
         list.add(new PieChart.Data("Earned Current Year", currYearSum));
         piechart.setData(list);
-//        piechart.setTitle("Earning Comparison");
+        // piechart.setTitle("Earning Comparison");
 
-//        piechart.getData().forEach(data -> {
-//            String percentage = (data.getPieValue()+"");
-//            Tooltip tooltip = new Tooltip(percentage);
-//            Tooltip.install(data.getNode(), tooltip);
-//        });
+        // piechart.getData().forEach(data -> {
+        // String percentage = (data.getPieValue()+"");
+        // Tooltip tooltip = new Tooltip(percentage);
+        // Tooltip.install(data.getNode(), tooltip);
+        // });
     }
 
     private void setEarnInfo() {
         Connection connection = getConnections();
         try {
-            if(!connection.isClosed()){
-                String year = (Calendar.getInstance().get(Calendar.YEAR))+"";
+            if (!connection.isClosed()) {
+                String year = (Calendar.getInstance().get(Calendar.YEAR)) + "";
                 String sql1 = "SELECT TOTALPRICE FROM CHECKINOUTINFO WHERE MONTH (CHECKEDOUT) = MONTH (curdate()) AND YEAR (CHECKEDOUT) = ? AND CHECKEDOUT IS NOT NULL";
                 PreparedStatement statement1 = connection.prepareStatement(sql1);
                 statement1.setString(1, year);
                 ResultSet resultSet1 = statement1.executeQuery();
 
-                while (resultSet1.next()){
+                while (resultSet1.next()) {
                     currMonthSum += Long.parseLong(resultSet1.getString("TOTALPRICE"));
                 }
                 String sql2 = "SELECT TOTALPRICE FROM CHECKINOUTINFO WHERE YEAR (CHECKEDOUT) = YEAR (NOW()) AND CHECKEDOUT IS NOT NULL;";
                 PreparedStatement statement2 = connection.prepareStatement(sql2);
                 ResultSet resultSet2 = statement2.executeQuery();
-                while (resultSet2.next()){
+                while (resultSet2.next()) {
                     currYearSum += Long.parseLong(resultSet2.getString("TOTALPRICE"));
                 }
                 String sql3 = "SELECT TOTALPRICE FROM CHECKINOUTINFO WHERE CHECKEDOUT IS NOT NULL;";
                 PreparedStatement statement3 = connection.prepareStatement(sql3);
                 ResultSet resultSet3 = statement3.executeQuery();
-                while (resultSet3.next()){
+                while (resultSet3.next()) {
                     allYearSum += Long.parseLong(resultSet3.getString("TOTALPRICE"));
                 }
-                earnMonth.setText(currMonthSum+"");
-                earnYear.setText(currYearSum+"");
-                earnAll.setText(allYearSum+"");
+                earnMonth.setText(currMonthSum + "");
+                earnYear.setText(currYearSum + "");
+                earnAll.setText(allYearSum + "");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -85,7 +86,6 @@ public class AdminTotalEarnings extends DBConnection implements Initializable {
             closeConnections();
         }
     }
-
 
     public void reloadChart(MouseEvent event) {
         loadPieChart();

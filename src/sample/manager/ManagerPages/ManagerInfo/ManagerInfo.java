@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 import static sample.customer.Login.UserLogin.currentCustomerNID;
 import static sample.manager.Login.ManagerLogin.currentEmployeeNID;
 
+@SuppressWarnings("unused")
 public class ManagerInfo implements Initializable {
     public Button CloseWindow;
     public Label managerName;
@@ -29,7 +30,7 @@ public class ManagerInfo implements Initializable {
     public Label managerAddress;
 
     public void CloseWindow(ActionEvent actionEvent) {
-        Stage stage = (Stage)CloseWindow.getScene().getWindow();
+        Stage stage = (Stage) CloseWindow.getScene().getWindow();
         stage.close();
     }
 
@@ -41,12 +42,12 @@ public class ManagerInfo implements Initializable {
     private void setManagerData() {
         Connection connection = DBConnection.getConnections();
         try {
-            if(!connection.isClosed()){
+            if (!connection.isClosed()) {
                 String sql = "SELECT * FROM EMPLOYEEINFO WHERE NID = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, currentEmployeeNID);
                 ResultSet resultSet = statement.executeQuery();
-                if(resultSet.next()){
+                if (resultSet.next()) {
                     String customerName = resultSet.getString("NAME");
                     String customerNID = resultSet.getString("NID");
                     String customerEmail = resultSet.getString("EMAIL");

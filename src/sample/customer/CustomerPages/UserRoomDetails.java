@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unused")
 public class UserRoomDetails extends DBConnection implements Initializable {
 
     @FXML
@@ -43,7 +44,6 @@ public class UserRoomDetails extends DBConnection implements Initializable {
     public TableColumn<CustomerRoomTable, String> roomStatusCol;
     private ObservableList<CustomerRoomTable> TABLEROW = FXCollections.observableArrayList();
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         roomNoCol.setCellValueFactory(new PropertyValueFactory<CustomerRoomTable, String>("ROOMNO"));
@@ -54,16 +54,16 @@ public class UserRoomDetails extends DBConnection implements Initializable {
         showRoomTable();
     }
 
-    public void showRoomTable(){
+    public void showRoomTable() {
         TABLEROW.clear();
         Connection connection = getConnections();
         try {
-            if(!connection.isClosed()){
+            if (!connection.isClosed()) {
                 String sql = "SELECT * FROM ROOMINFO ORDER BY STATUS";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()){
-                    String ROOMNO = resultSet.getString("ROOM_NO"); //SQL COL NAMES NID
+                while (resultSet.next()) {
+                    String ROOMNO = resultSet.getString("ROOM_NO"); // SQL COL NAMES NID
                     String TYPE = resultSet.getString("TYPE");
                     String CAPACITY = resultSet.getString("CAPACITY");
                     String PRICEDAY = resultSet.getString("PRICE_DAY");
@@ -81,7 +81,6 @@ public class UserRoomDetails extends DBConnection implements Initializable {
             closeConnections();
         }
 
-
         // Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<CustomerRoomTable> filteredData = new FilteredList<>(TABLEROW, b -> true);
         UserSearchRoomStatus.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -90,15 +89,15 @@ public class UserRoomDetails extends DBConnection implements Initializable {
                     return true;
                 }
                 String searchKeyword = newValue.toLowerCase();
-                if (search.getROOMNO().toLowerCase().indexOf(searchKeyword) != -1 ) {
+                if (search.getROOMNO().toLowerCase().indexOf(searchKeyword) != -1) {
                     return true; // Filter matches Room No.
-                } else if (search.getTYPE().toLowerCase().indexOf(searchKeyword) != -1 ) {
+                } else if (search.getTYPE().toLowerCase().indexOf(searchKeyword) != -1) {
                     return true; // Filter matches Room Type.
-                } else if (search.getCAPACITY().toLowerCase().indexOf(searchKeyword) != -1 ) {
+                } else if (search.getCAPACITY().toLowerCase().indexOf(searchKeyword) != -1) {
                     return true; // Filter matches Room Capacity Column
-                } else if (search.getPRICEDAY().toLowerCase().indexOf(searchKeyword) != -1 ) {
+                } else if (search.getPRICEDAY().toLowerCase().indexOf(searchKeyword) != -1) {
                     return true; // Filter matches Room Price
-                } else if(search.getSTATUS().toLowerCase().indexOf(searchKeyword) != -1){
+                } else if (search.getSTATUS().toLowerCase().indexOf(searchKeyword) != -1) {
                     return true; // Matches room status
                 } else {
                     return false;
@@ -109,16 +108,15 @@ public class UserRoomDetails extends DBConnection implements Initializable {
         SortedList<CustomerRoomTable> sortedData = new SortedList<>(filteredData);
 
         // 4. Bind the SortedList comparator to the TableView comparator.
-        // 	  Otherwise, sorting the TableView would have no effect.
+        // Otherwise, sorting the TableView would have no effect.
         sortedData.comparatorProperty().bind(roomTable.comparatorProperty());
 
         // 5. Add sorted (and filtered) data to the table.
         roomTable.setItems(sortedData);
         // show data into table view
-//        tableView.getItems().setAll(contacts);
-        //contacts.clear(); //contacts arraylist empty hobe so that contacts arraylist e future e data add repeat na hoy
-
-
+        // tableView.getItems().setAll(contacts);
+        // contacts.clear(); //contacts arraylist empty hobe so that contacts arraylist
+        // e future e data add repeat na hoy
 
     }
 }

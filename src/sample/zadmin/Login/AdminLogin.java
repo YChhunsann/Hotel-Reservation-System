@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unused")
 public class AdminLogin implements Initializable {
 
     public TextField adminNIDField;
@@ -42,20 +43,22 @@ public class AdminLogin implements Initializable {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     CommonTask.showAlert(Alert.AlertType.INFORMATION, "Login Success!", "Successfully Logged In!");
-                    CommonTask.pageNavigation("/sample/zadmin/AdminPages/AdminMain.fxml", Main.stage,this.getClass(),"Admin Dashboard", 1000, 600);
+                    CommonTask.pageNavigation("/sample/zadmin/AdminPages/AdminMain.fxml", Main.stage, this.getClass(),
+                            "Admin Dashboard", 1000, 600);
                 } else {
                     CommonTask.showAlert(Alert.AlertType.ERROR, "Login Failed!", "Incorrect NID or Password!");
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DBConnection.closeConnections();
         }
-        }
+    }
 
     public void BackToMain(ActionEvent actionEvent) throws IOException {
-        CommonTask.pageNavigation("/sample/sample.fxml", Main.stage,this.getClass(),"Hotel Management System", 600, 400);
+        CommonTask.pageNavigation("/sample/sample.fxml", Main.stage, this.getClass(), "Hotel Management System", 600,
+                400);
     }
 
     @Override

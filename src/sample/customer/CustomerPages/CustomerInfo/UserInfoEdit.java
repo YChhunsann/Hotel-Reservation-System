@@ -25,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unused")
 public class UserInfoEdit implements Initializable {
 
     public Button UserConfirm;
@@ -59,9 +60,11 @@ public class UserInfoEdit implements Initializable {
         String customerEmail = UserEmailEdit.getText();
         String customerPhone = UserPhoneEdit.getText();
         String customerAddress = UserAddressEdit.getText();
-//        System.out.println(customerPhone);
-        if (customerName.isEmpty() || customerNID.isEmpty() || customerPassword.isEmpty() || customerEmail.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty()) {
-            CommonTask.showJFXAlert(rootPane, rootAnchorPane, "warning", "Warning!", "Text field can't be empty!", JFXDialog.DialogTransition.CENTER);
+        // System.out.println(customerPhone);
+        if (customerName.isEmpty() || customerNID.isEmpty() || customerPassword.isEmpty() || customerEmail.isEmpty()
+                || customerAddress.isEmpty() || customerPhone.isEmpty()) {
+            CommonTask.showJFXAlert(rootPane, rootAnchorPane, "warning", "Warning!", "Text field can't be empty!",
+                    JFXDialog.DialogTransition.CENTER);
         } else {
             String sql = "UPDATE CUSTOMERINFO SET NAME = ?, PASSWORD = ?, EMAIL = ?, PHONE = ?, ADDRESS = ? WHERE NID = ?";
             PreparedStatement preparedStatementUpdate = connection.prepareStatement(sql);
@@ -73,12 +76,15 @@ public class UserInfoEdit implements Initializable {
             preparedStatementUpdate.setString(6, currentCustomerNID);
             try {
                 preparedStatementUpdate.execute();
-//                CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Update Successful!");]
+                // CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Update
+                // Successful!");]
                 editedFlag = true;
-                CommonTask.pageNavigation("/sample/customer/CustomerPages/CustomerInfo/UserInfo.fxml", (Stage) UserConfirm.getScene().getWindow(),this.getClass(),"User Home", 550, 400);
+                CommonTask.pageNavigation("/sample/customer/CustomerPages/CustomerInfo/UserInfo.fxml",
+                        (Stage) UserConfirm.getScene().getWindow(), this.getClass(), "User Home", 550, 400);
 
-            } catch (SQLException e){
-                CommonTask.showJFXAlert(rootPane, rootAnchorPane, "ERROR", "ERROR!", "Connection Problem!", JFXDialog.DialogTransition.CENTER);
+            } catch (SQLException e) {
+                CommonTask.showJFXAlert(rootPane, rootAnchorPane, "ERROR", "ERROR!", "Connection Problem!",
+                        JFXDialog.DialogTransition.CENTER);
             } finally {
                 DBConnection.closeConnections();
             }
@@ -90,15 +96,15 @@ public class UserInfoEdit implements Initializable {
         setCustomerInfo();
     }
 
-    public void setCustomerInfo(){
+    public void setCustomerInfo() {
         Connection connection = DBConnection.getConnections();
         try {
-            if(!connection.isClosed()){
+            if (!connection.isClosed()) {
                 String sql = "SELECT * FROM CUSTOMERINFO WHERE NID = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, currentCustomerNID);
                 ResultSet resultSet = statement.executeQuery();
-                if(resultSet.next()){
+                if (resultSet.next()) {
                     String customerNameSet = resultSet.getString("NAME");
                     String customerNIDSet = resultSet.getString("NID");
                     String customerEmailSet = resultSet.getString("EMAIL");
@@ -114,8 +120,9 @@ public class UserInfoEdit implements Initializable {
                     UserPassEdit.setText(customerPasswordSet);
                     UserAddressEdit.setText(customerAddressSet);
                 } else {
-//                    CommonTask.showAlert(Alert.AlertType.ERROR, "ERROR", "Can't get/set Info!");
-                    CommonTask.showJFXAlert(rootPane, rootAnchorPane, "ERROR", "ERROR!", "Connection Problem!", JFXDialog.DialogTransition.CENTER);
+                    // CommonTask.showAlert(Alert.AlertType.ERROR, "ERROR", "Can't get/set Info!");
+                    CommonTask.showJFXAlert(rootPane, rootAnchorPane, "ERROR", "ERROR!", "Connection Problem!",
+                            JFXDialog.DialogTransition.CENTER);
 
                 }
             }
@@ -127,6 +134,7 @@ public class UserInfoEdit implements Initializable {
     }
 
     public void BackBtn(ActionEvent event) throws IOException {
-        CommonTask.pageNavigation("/sample/customer/CustomerPages/CustomerInfo/UserInfo.fxml", (Stage) UserConfirm.getScene().getWindow(),this.getClass(),"User Home", 550, 400);
+        CommonTask.pageNavigation("/sample/customer/CustomerPages/CustomerInfo/UserInfo.fxml",
+                (Stage) UserConfirm.getScene().getWindow(), this.getClass(), "User Home", 550, 400);
     }
 }

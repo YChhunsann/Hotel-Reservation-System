@@ -1,4 +1,5 @@
 package sample.customer.Login;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unused")
 public class UserSignup implements Initializable {
 
     public TextField CustomerNameField;
@@ -27,6 +29,7 @@ public class UserSignup implements Initializable {
     public TextArea CustomerAddressField;
     public ImageView closeWindow;
     Connection connection = DBConnection.getConnections();
+
     @FXML
     void UserSignUp(ActionEvent event) throws IOException, SQLException {
         String customerName = CustomerNameField.getText();
@@ -35,7 +38,8 @@ public class UserSignup implements Initializable {
         String customerEmail = CustomerEmailField.getText();
         String customerPhone = CustomerPhoneField.getText();
         String customerAddress = CustomerAddressField.getText();
-        if (customerName.isEmpty() || customerNID.isEmpty()  || customerPassword.isEmpty() || customerEmail.isEmpty() || customerAddress.isEmpty() || customerPhone.isEmpty()) {
+        if (customerName.isEmpty() || customerNID.isEmpty() || customerPassword.isEmpty() || customerEmail.isEmpty()
+                || customerAddress.isEmpty() || customerPhone.isEmpty()) {
             CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Field can't be empty!");
         } else {
             String sql = "INSERT INTO CUSTOMERINFO(NAME, NID, PASSWORD, EMAIL, PHONE, ADDRESS) VALUES(?,?,?,?,?,?)";
@@ -46,11 +50,11 @@ public class UserSignup implements Initializable {
             preparedStatement.setString(4, customerEmail);
             preparedStatement.setString(5, customerPhone);
             preparedStatement.setString(6, customerAddress);
-            try{
+            try {
                 preparedStatement.execute();
                 CommonTask.showAlert(Alert.AlertType.INFORMATION, "Successful", "Sign-up Successful!");
-                CommonTask.pageNavigation("UserLogin.fxml", Main.stage,this.getClass(),"Customer Login", 600, 400);
-            } catch (SQLException e){
+                CommonTask.pageNavigation("UserLogin.fxml", Main.stage, this.getClass(), "Customer Login", 600, 400);
+            } catch (SQLException e) {
                 CommonTask.showAlert(Alert.AlertType.ERROR, "Error", "Account already exists with this NID!");
             } finally {
                 DBConnection.closeConnections();
@@ -60,11 +64,11 @@ public class UserSignup implements Initializable {
     }
 
     public void BackToUserLogin(ActionEvent actionEvent) throws IOException {
-        CommonTask.pageNavigation("UserLogin.fxml", Main.stage,this.getClass(),"User Home", 600, 400);
+        CommonTask.pageNavigation("UserLogin.fxml", Main.stage, this.getClass(), "User Home", 600, 400);
     }
+
     private static final String IDLE_BUTTON_STYLE = "-fx-scale-x: 1; -fx-scale-y: 1; -fx-opacity: 0.8";
     private static final String HOVERED_BUTTON_STYLE = "-fx-scale-x: 1.2; -fx-scale-y: 1.2; -fx-opacity: 1";
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

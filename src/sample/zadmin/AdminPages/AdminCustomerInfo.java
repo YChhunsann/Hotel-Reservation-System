@@ -39,7 +39,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import static sample.Main.xxx;
 import static sample.Main.yyy;
 
-public class AdminCustomerInfo extends DBConnection implements Initializable{
+@SuppressWarnings("unused")
+public class AdminCustomerInfo extends DBConnection implements Initializable {
     public TableView<AdminCustomerTable> customerTable;
     public TableColumn<AdminCustomerTable, String> nidCol;
     public TableColumn<AdminCustomerTable, String> nameCol;
@@ -47,6 +48,7 @@ public class AdminCustomerInfo extends DBConnection implements Initializable{
     public TableColumn<AdminCustomerTable, String> phoneCol;
     public TableColumn<AdminCustomerTable, String> addressCol;
     public TableColumn<AdminCustomerTable, String> passCol;
+    @SuppressWarnings("rawtypes")
     public TableColumn actionCol;
 
     private ObservableList<AdminCustomerTable> TABLEROW = FXCollections.observableArrayList();
@@ -54,7 +56,8 @@ public class AdminCustomerInfo extends DBConnection implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         TABLEROW.clear();
-        nameCol.setCellValueFactory(new PropertyValueFactory<AdminCustomerTable, String>("Name")); //adminCustomerTable variable name
+        nameCol.setCellValueFactory(new PropertyValueFactory<AdminCustomerTable, String>("Name")); // adminCustomerTable
+                                                                                                   // variable name
         nidCol.setCellValueFactory(new PropertyValueFactory<AdminCustomerTable, String>("NID"));
         emailCol.setCellValueFactory(new PropertyValueFactory<AdminCustomerTable, String>("Email"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<AdminCustomerTable, String>("Phone"));
@@ -64,16 +67,16 @@ public class AdminCustomerInfo extends DBConnection implements Initializable{
         actionButtons();
     }
 
-    public void showCustomerTable(){
+    public void showCustomerTable() {
         TABLEROW.clear();
         Connection connection = getConnections();
         try {
-            if(!connection.isClosed()){
+            if (!connection.isClosed()) {
                 String sql = "SELECT * FROM CUSTOMERINFO ORDER BY NID";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()){
-                    String NID = resultSet.getString("NID"); //SQL COL NAMES NID
+                while (resultSet.next()) {
+                    String NID = resultSet.getString("NID"); // SQL COL NAMES NID
                     String NAME = resultSet.getString("NAME");
                     String EMAIL = resultSet.getString("EMAIL");
                     String PHONE = resultSet.getString("PHONE");
@@ -93,115 +96,105 @@ public class AdminCustomerInfo extends DBConnection implements Initializable{
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void actionButtons() {
-        Callback<TableColumn<AdminCustomerTable, String>, TableCell<AdminCustomerTable, String>> cellCallback =
-                new Callback<TableColumn<AdminCustomerTable, String>, TableCell<AdminCustomerTable, String>>() {
+        Callback<TableColumn<AdminCustomerTable, String>, TableCell<AdminCustomerTable, String>> cellCallback = new Callback<TableColumn<AdminCustomerTable, String>, TableCell<AdminCustomerTable, String>>() {
+            @Override
+            public TableCell<AdminCustomerTable, String> call(TableColumn<AdminCustomerTable, String> param) {
+
+                TableCell<AdminCustomerTable, String> cell = new TableCell<AdminCustomerTable, String>() {
+
+                    FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                    FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+
+                    public HBox hBox = new HBox(25, editIcon, deleteIcon);
+
                     @Override
-                    public TableCell<AdminCustomerTable, String> call(TableColumn<AdminCustomerTable, String> param) {
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
 
-                        TableCell<AdminCustomerTable, String> cell = new TableCell<AdminCustomerTable, String>() {
+                            deleteIcon.setStyle(
+                                    " -fx-cursor: hand ;"
+                                            + "-glyph-size:20px;"
+                                            + "-fx-fill:#ffffff;");
 
-                            FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
-                            FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
+                            deleteIcon.setOnMouseEntered((MouseEvent event) -> {
+                                deleteIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:khaki;");
+                            });
 
-                            public HBox hBox = new HBox(25, editIcon, deleteIcon);
+                            deleteIcon.setOnMouseExited((MouseEvent event2) -> {
+                                deleteIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:white;");
+                            });
 
-                            @Override
-                            protected void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty){
-                                    setGraphic(null);
-                                    setText(null);
-                                }else{
+                            deleteIcon.setOnMouseClicked((MouseEvent event2) -> {
+                                deleteIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:lightgreen;");
 
-                                    deleteIcon.setStyle(
-                                            " -fx-cursor: hand ;"
-                                                    + "-glyph-size:20px;"
-                                                    + "-fx-fill:#ffffff;"
-                                    );
+                                // delete sql statements
+                                AdminCustomerTable adminCustomerTable = getTableView().getItems().get(getIndex());
+                                tableRowDelete(adminCustomerTable);
+                            });
 
-                                    deleteIcon.setOnMouseEntered((MouseEvent event) ->{
-                                        deleteIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        +"-fx-fill:khaki;"
-                                        );
-                                    });
+                            editIcon.setStyle(
+                                    " -fx-cursor: hand ;"
+                                            + "-glyph-size:20px;"
+                                            + "-fx-fill:#ffffff;");
 
-                                    deleteIcon.setOnMouseExited((MouseEvent event2) ->{
-                                        deleteIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:white;"
-                                        );
-                                    });
+                            editIcon.setOnMouseEntered((MouseEvent event) -> {
+                                editIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:khaki;");
+                            });
 
-                                    deleteIcon.setOnMouseClicked((MouseEvent event2) ->{
-                                        deleteIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        +"-fx-fill:lightgreen;"
-                                        );
+                            editIcon.setOnMouseExited((MouseEvent event2) -> {
+                                editIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:white;");
+                            });
 
-                                        //delete sql statements
-                                        AdminCustomerTable adminCustomerTable = getTableView().getItems().get(getIndex());
-                                        tableRowDelete(adminCustomerTable);
-                                    });
+                            editIcon.setOnMouseClicked((MouseEvent event2) -> {
+                                editIcon.setStyle(
+                                        " -fx-cursor: hand ;"
+                                                +
+                                                "-glyph-size:20px;"
+                                                + "-fx-fill:lightgreen;");
+                                AdminCustomerTable adminCustomerTable = getTableView().getItems().get(getIndex());
+                                // System.out.println(managerRoomTable.getROOMNO());
+                                editTableRowInfo(adminCustomerTable);
 
-                                    editIcon.setStyle(
-                                            " -fx-cursor: hand ;"
-                                                    + "-glyph-size:20px;"
-                                                    + "-fx-fill:#ffffff;"
-                                    );
+                            });
 
-                                    editIcon.setOnMouseEntered((MouseEvent event) ->{
-                                        editIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        +"-fx-fill:khaki;"
-                                        );
-                                    });
-
-                                    editIcon.setOnMouseExited((MouseEvent event2) ->{
-                                        editIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        + "-fx-fill:white;"
-                                        );
-                                    });
-
-                                    editIcon.setOnMouseClicked((MouseEvent event2) ->{
-                                        editIcon.setStyle(
-                                                " -fx-cursor: hand ;"
-                                                        +
-                                                        "-glyph-size:20px;"
-                                                        +"-fx-fill:lightgreen;"
-                                        );
-                                        AdminCustomerTable adminCustomerTable = getTableView().getItems().get(getIndex());
-//                                        System.out.println(managerRoomTable.getROOMNO());
-                                        editTableRowInfo(adminCustomerTable);
-
-                                    });
-
-
-
-                                    hBox.setStyle("-fx-alignment:center");
-//                                    hBox.setMaxWidth(40);
-//                                    HBox.setMargin(editIcon, new Insets(2, 10, 0, 10));
-//                                    HBox.setMargin(deleteIcon, new Insets(2, 10, 0, 10));
-                                    setGraphic(hBox);
-                                }
-                            }
-                        };
-
-                        return cell;
+                            hBox.setStyle("-fx-alignment:center");
+                            // hBox.setMaxWidth(40);
+                            // HBox.setMargin(editIcon, new Insets(2, 10, 0, 10));
+                            // HBox.setMargin(deleteIcon, new Insets(2, 10, 0, 10));
+                            setGraphic(hBox);
+                        }
                     }
                 };
+
+                return cell;
+            }
+        };
         actionCol.setCellFactory(cellCallback);
     }
 
@@ -210,13 +203,16 @@ public class AdminCustomerInfo extends DBConnection implements Initializable{
         try {
             if (!connection.isClosed()) {
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/sample/zadmin/AdminPages/EditCustomerEmployee/CustomerInfoEdit.fxml"));
+                loader.setLocation(
+                        getClass().getResource("/sample/zadmin/AdminPages/EditCustomerEmployee/CustomerInfoEdit.fxml"));
                 Parent viewContact = loader.load();
                 Scene scene = new Scene(viewContact);
                 // update information
                 CustomerInfoEdit customerInfoEdit = loader.getController();
                 customerInfoEdit.setCustomerInfo(adminCustomerTable);
-//                    System.out.println(managerRoomTable.getROOMNO() + " " + managerRoomTable.getTYPE() + " " + managerRoomTable.getCAPACITY() + " " + managerRoomTable.getPRICEDAY());
+                // System.out.println(managerRoomTable.getROOMNO() + " " +
+                // managerRoomTable.getTYPE() + " " + managerRoomTable.getCAPACITY() + " " +
+                // managerRoomTable.getPRICEDAY());
                 Stage window = new Stage();
                 window.setScene(scene);
                 window.initStyle(StageStyle.UNDECORATED);
@@ -242,18 +238,18 @@ public class AdminCustomerInfo extends DBConnection implements Initializable{
             yyy = event.getSceneY();
         });
         root.setOnMouseDragged(event -> {
-//            if(event.getButton() == MouseButton.SECONDARY) {
+            // if(event.getButton() == MouseButton.SECONDARY) {
             primaryStage.setX(event.getScreenX() - xxx);
             primaryStage.setY(event.getScreenY() - yyy);
             x.set(primaryStage.getX());
             y.set(primaryStage.getY());
-//            }
+            // }
         });
     }
 
     public void tableRowDelete(AdminCustomerTable adminCustomerTable) {
-//        String roomStatus = managerRoomTable.getSTATUS();
-//        if (!roomStatus.equals("Booked")) {
+        // String roomStatus = managerRoomTable.getSTATUS();
+        // if (!roomStatus.equals("Booked")) {
         Connection connection = getConnections();
         try {
             if (!connection.isClosed()) {
@@ -261,9 +257,10 @@ public class AdminCustomerInfo extends DBConnection implements Initializable{
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, adminCustomerTable.getNID());
                 statement.execute();
-                CommonTask.showAlert(Alert.AlertType.INFORMATION, "Delete Operation Successful", "Customer Named " + adminCustomerTable.getName() + " is deleted from database!");
+                CommonTask.showAlert(Alert.AlertType.INFORMATION, "Delete Operation Successful",
+                        "Customer Named " + adminCustomerTable.getName() + " is deleted from database!");
 
-                //showTableInformation();
+                // showTableInformation();
                 customerTable.getItems().remove(adminCustomerTable);
             }
         } catch (SQLException throwables) {

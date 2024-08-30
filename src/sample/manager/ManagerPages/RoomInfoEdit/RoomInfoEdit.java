@@ -22,6 +22,7 @@ import static sample._BackEnd.DBConnection.closeConnections;
 import static sample._BackEnd.DBConnection.getConnections;
 import static sample.customer.Login.UserLogin.currentCustomerNID;
 
+@SuppressWarnings("unused")
 public class RoomInfoEdit implements Initializable {
     public Button UserConfirm;
 
@@ -29,8 +30,9 @@ public class RoomInfoEdit implements Initializable {
     public TextField roomTypeField;
     public TextField capacityField;
     public TextField priceDayField;
+    @SuppressWarnings("rawtypes")
     public JFXComboBox statusCbox;
-    private String[] roomStats = {"Available", "Unavailable"};
+    private String[] roomStats = { "Available", "Unavailable" };
 
     public void closeBtn(ActionEvent event) {
         Stage stage = (Stage) UserConfirm.getScene().getWindow();
@@ -40,30 +42,32 @@ public class RoomInfoEdit implements Initializable {
     public void saveBtn(ActionEvent event) {
         Connection connection = getConnections();
         try {
-            if (!connection.isClosed()){
+            if (!connection.isClosed()) {
                 String sql = "UPDATE RoomInfo SET TYPE = ?, CAPACITY = ?, PRICE_DAY = ?, STATUS = ? where ROOM_NO = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, roomTypeField.getText());
                 statement.setString(2, capacityField.getText());
                 statement.setString(3, priceDayField.getText());
-                statement.setString(4, statusCbox.getValue()+"");
+                statement.setString(4, statusCbox.getValue() + "");
                 statement.setString(5, roomNoField.getText());
                 statement.executeUpdate();
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
             closeConnections();
         }
         Stage stage = (Stage) UserConfirm.getScene().getWindow();
         stage.close();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         statusCbox.getItems().setAll(roomStats);
     }
 
+    @SuppressWarnings("unchecked")
     public void setRoomInfo(String roomNo, String type, String capacity, String priceDay, String status) {
         roomNoField.setText(roomNo);
         roomNoField.setDisable(true);
