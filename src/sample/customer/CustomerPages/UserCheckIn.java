@@ -4,21 +4,16 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import sample.Main;
 import sample._BackEnd.CommonTask;
 import sample._BackEnd.DBConnection;
 
-import javax.print.DocFlavor;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static sample._BackEnd.DBConnection.connection;
 import static sample.customer.Login.UserLogin.currentCustomerNID;
 
 @SuppressWarnings("unused")
@@ -73,7 +67,7 @@ public class UserCheckIn implements Initializable {
             CommonTask.showJFXAlert(rootPane, userCheckInPane, "warning", "Warning!", "Field Can't be Empty!",
                     JFXDialog.DialogTransition.CENTER);
         } else {
-            String sql = "INSERT INTO CHECKINOUTINFO (NAME, NID, EMAIL, PHONE, ADDRESS, ROOMNO, CHECKEDIN, ROOMTYPE, CAPACITY, PRICEDAY) VALUES(?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO hms0.checkinoutinfo (NAME, NID, EMAIL, PHONE, ADDRESS, ROOMNO, CHECKEDIN, ROOMTYPE, CAPACITY, PRICEDAY) VALUES(?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, NID);
@@ -87,7 +81,7 @@ public class UserCheckIn implements Initializable {
             preparedStatement.setString(10, roomPrice);
             try {
                 preparedStatement.execute();
-                String sql1 = "UPDATE ROOMINFO SET STATUS = 'Booked' WHERE ROOM_NO = ?";
+                String sql1 = "UPDATE hms0.roominfo SET STATUS = 'Booked' WHERE ROOMNO = ?";
                 PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
                 preparedStatement1.setString(1, RoomNo);
                 preparedStatement1.execute();
@@ -120,14 +114,14 @@ public class UserCheckIn implements Initializable {
         Connection connection = DBConnection.getConnections();
         try {
             if (!connection.isClosed()) {
-                String sql = "SELECT * FROM ROOMINFO WHERE ROOM_NO = ?";
+                String sql = "SELECT * FROM hms0.roominfo WHERE ROOMNO = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, roomNo);
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     String roomCapacity = resultSet.getString("CAPACITY");
-                    String roomType = resultSet.getString("TYPE");
-                    String roomPriceDay = resultSet.getString("PRICE_DAY");
+                    String roomType = resultSet.getString("ROOMTYPE");
+                    String roomPriceDay = resultSet.getString("PRICEDAY");
 
                     roomCapacityField.setText(roomCapacity);
                     roomPriceField.setText(roomPriceDay);
@@ -149,12 +143,12 @@ public class UserCheckIn implements Initializable {
         Connection connection = DBConnection.getConnections();
         try {
             if (!connection.isClosed()) {
-                String sql = "SELECT * FROM ROOMINFO WHERE STATUS = ?";
+                String sql = "SELECT * FROM hms0.roominfo WHERE STATUS = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, "Available");
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    rooms.add(resultSet.getString("ROOM_NO"));
+                    rooms.add(resultSet.getString("ROOMNO"));
                 }
             }
         } catch (SQLException e) {
@@ -170,7 +164,7 @@ public class UserCheckIn implements Initializable {
         Connection connection = DBConnection.getConnections();
         try {
             if (!connection.isClosed()) {
-                String sql = "SELECT * FROM CUSTOMERINFO WHERE NID = ?";
+                String sql = "SELECT * FROM hms0.customerinfo WHERE NID = ?";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, currentCustomerNID);
                 ResultSet resultSet = statement.executeQuery();

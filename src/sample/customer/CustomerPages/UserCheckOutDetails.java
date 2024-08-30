@@ -2,37 +2,29 @@ package sample.customer.CustomerPages;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.sun.scenario.effect.ImageData;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
-import sample.Main;
-import sample._BackEnd.CommonTask;
 import sample._BackEnd.DBConnection;
 import sample._BackEnd.TableView.CustomerCheckOutTable;
-import sample._BackEnd.TableView.CustomerRoomTable;
-import sample._BackEnd.TableView.ManagerRoomTable;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -80,7 +72,7 @@ public class UserCheckOutDetails extends DBConnection implements Initializable {
         Connection connection = getConnections();
         try {
             if (!connection.isClosed()) {
-                String sql = "SELECT * FROM CHECKINOUTINFO WHERE NID = ? ORDER BY SI_NO DESC";
+                String sql = "SELECT * FROM hms0.checkinoutinfo WHERE NID = ? ORDER BY SI_NO DESC";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setString(1, currentCustomerNID);
                 ResultSet resultSet = statement.executeQuery();

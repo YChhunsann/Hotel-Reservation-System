@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -12,13 +11,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import sample.Main;
-import sample._BackEnd.CommonTask;
 import sample._BackEnd.DBConnection;
 import sample._BackEnd.TableView.CustomerRoomTable;
-import sample._BackEnd.TableView.ManagerRoomTable;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,14 +54,14 @@ public class UserRoomDetails extends DBConnection implements Initializable {
         Connection connection = getConnections();
         try {
             if (!connection.isClosed()) {
-                String sql = "SELECT * FROM ROOMINFO ORDER BY STATUS";
+                String sql = "SELECT * FROM hms0.roominfo ORDER BY STATUS";
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    String ROOMNO = resultSet.getString("ROOM_NO"); // SQL COL NAMES NID
-                    String TYPE = resultSet.getString("TYPE");
+                    String ROOMNO = resultSet.getString("ROOMNO"); // SQL COL NAMES NID
+                    String TYPE = resultSet.getString("ROOMTYPE");
                     String CAPACITY = resultSet.getString("CAPACITY");
-                    String PRICEDAY = resultSet.getString("PRICE_DAY");
+                    String PRICEDAY = resultSet.getString("PRICEDAY");
                     String STATUS = resultSet.getString("STATUS");
 
                     CustomerRoomTable roomTablee = new CustomerRoomTable(ROOMNO, TYPE, CAPACITY, PRICEDAY, STATUS);
