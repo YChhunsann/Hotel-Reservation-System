@@ -14,7 +14,7 @@
       <JFXButton />
       <BorderPane fx:id="borderpane" prefHeight="600.0" prefWidth="1000.0">
          <left>
-            <AnchorPane prefHeight="570.0" prefWidth="140.0" styleClass="root" stylesheets="@CSS/adminMainRightPane.css" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="570.0" prefWidth="140.0" styleClass="root" stylesheets="@../../../adminMainRightPane.css" BorderPane.alignment="CENTER">
                <children>
                   <VBox prefHeight="569.0" prefWidth="140.0" styleClass="buttonVbox">
                      <children>

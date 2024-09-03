@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="880.0" styleClass="bodybg" stylesheets="@CSS/newStyles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.zadmin.AdminPages.AdminAddEmployee">
+<AnchorPane prefHeight="600.0" prefWidth="880.0" styleClass="bodybg" stylesheets="@../../../newStyles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.zadmin.AdminPages.AdminAddEmployee">
    <children>
       <!-- Updated Pane for Background -->
       <Pane layoutX="180.0" layoutY="50.0" prefHeight="500.0" prefWidth="480.0" style="-fx-background-color: #ffffff; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, #888888, 10, 0, 0, 5);" />
