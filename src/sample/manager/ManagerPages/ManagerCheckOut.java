@@ -71,6 +71,7 @@ public class ManagerCheckOut extends DBConnection implements Initializable {
             String priceDay = priceDayField.getText();
             boolean isNumeric = priceDay.chars().allMatch(Character::isDigit);
             if(isNumeric) {
+                // Total price when check-out
                 long pricePerDay = Long.parseLong(priceDay);
                 long totalPrice = pricePerDay * days;
                 totalPriceField.setText(totalPrice+"");
