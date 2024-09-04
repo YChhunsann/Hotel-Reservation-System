@@ -7,7 +7,7 @@
 .buttonVbox {
     -fx-pref-width: 160;
     -fx-pref-height: 570;
-    -fx-padding: 20 0 0 20; /* Increased padding */
+    -fx-padding: 20 0 0 30; /* Increased padding */
     -fx-spacing: 20; /* Increased spacing */
 }
 

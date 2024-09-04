@@ -1,0 +1,58 @@
+.root {
+    -fx-pref-width: 160;
+    -fx-pref-height: 370;
+    -fx-background-color: #1C1C1C; /* Dark background */
+}
+
+.buttonVbox {
+    -fx-pref-width: 160;
+    -fx-pref-height: 570;
+    -fx-padding: 20 0 0 0; /* Padding */
+    -fx-spacing: 20; /* Spacing between buttons */
+}
+
+.button {
+    -fx-pref-width: 140px; /* Standard width for buttons */
+    -fx-pref-height: 50px; /* Standard height for buttons */
+    -fx-background-color: #34495E; /* Dark gray-blue background */
+    -fx-background-radius: 10; /* Rounded corners */
+    -fx-font-size: 13px; /* Font size */
+    -fx-text-fill: white; /* White text color */
+}
+
+.button:hover {
+    -fx-background-color: #16A085; /* Greenish background on hover */
+    -fx-text-fill: #F1C40F; /* Yellow text on hover */
+    -fx-scale-x: 1.08; /* Slightly larger scale on hover */
+    -fx-scale-y: 1.08; /* Slightly larger scale on hover */
+}
+
+.button:focused {
+    -fx-background-color: #2980B9; /* Blue background when focused */
+    -fx-text-fill: #ECF0F1; /* Lighter text color when focused */
+    -fx-scale-x: 1.08; /* Slightly larger scale when focused */
+    -fx-scale-y: 1.08; /* Slightly larger scale when focused */
+}
+
+.bodybg {
+    -fx-background-color: #f0f3f4; /* Light gray background */
+}
+
+.pane {
+    -fx-background-color: #ffffff; /* White background for the pane */
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, #bdc3c7, 10, 0, 0, 5);
+}
+
+.jfx-button {
+    -fx-background-color: #8E44AD; /* Purple background */
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: #7D3C98; /* Darker purple border */
+    -fx-text-fill: white;
+}
+
+.jfx-text-field {
+    -fx-focus-color: #5DADE2; /* Light blue focus color */
+    -fx-unfocus-color: #AED6F1; /* Light blue unfocused color */
+}

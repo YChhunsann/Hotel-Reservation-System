@@ -1,17 +1,26 @@
 .button{
-    -fx-background-color: white;
-    -fx-background-radius: 30 0 0 30;
-    -fx-font-size: 13;
+    -fx-background-color: #f0f0f0; /* Light grey background */
+    -fx-background-radius: 20 20 0 0; /* Rounded corners on the top */
+    -fx-border-color: #b0b0b0; /* Grey border */
+    -fx-border-width: 2px; /* Border width */
+    -fx-font-size: 14px; /* Slightly larger font size */
+    -fx-padding: 10px 20px; /* Padding for a more defined button */
+    -fx-text-fill: #333333; /* Dark grey text */
+    -fx-font-weight: bold; /* Bold font */
 }
 
 .button:hover{
-    -fx-background-color: Khaki;
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+    -fx-background-color: #dcdcdc; /* Darker grey on hover */
+    -fx-border-color: #999999; /* Darker border on hover */
+    -fx-text-fill: #000000; /* Black text on hover */
+    -fx-scale-x: 1.1; /* Slightly larger scale on hover */
+    -fx-scale-y: 1.1;
 }
 
 .button:focused{
-    -fx-background-color: lightgreen;
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+    -fx-background-color: #8fbc8f; /* Light green background when focused */
+    -fx-border-color: #6b8e23; /* Olive green border when focused */
+    -fx-text-fill: #ffffff; /* White text when focused */
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
 }

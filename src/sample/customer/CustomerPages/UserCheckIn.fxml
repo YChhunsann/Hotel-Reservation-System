@@ -12,7 +12,7 @@
 
 <StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.customer.CustomerPages.UserCheckIn">
    <children>
-      <AnchorPane fx:id="userCheckInPane" prefHeight="370.0" prefWidth="640.0" styleClass="bodybg" stylesheets="@CSS/imageSet.css">
+      <AnchorPane fx:id="userCheckInPane" prefHeight="370.0" prefWidth="640.0" styleClass="bodybg" stylesheets="@../../../newStyles.css">
          <children>
             <Pane layoutX="53.0" layoutY="25.0" prefHeight="323.0" prefWidth="532.0" style="-fx-background-color: rgba(76, 75, 80, 0.4); -fx-background-radius: 25;">
                <children>

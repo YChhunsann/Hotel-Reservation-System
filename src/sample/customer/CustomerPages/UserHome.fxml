@@ -11,7 +11,7 @@
 
 <StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.customer.CustomerPages.UserHome">
    <children>
-      <AnchorPane fx:id="rootAnchorPane" prefHeight="370.0" prefWidth="640.0" styleClass="bodybg" stylesheets="@CSS/imageSet.css">
+      <AnchorPane fx:id="rootAnchorPane" prefHeight="370.0" prefWidth="640.0" styleClass="bodybg" stylesheets="@../../../newStyles.css">
          <children>
             <JFXButton layoutX="285.0" layoutY="239.0" style="-fx-background-color: transparent;" text=" " />
             <VBox alignment="CENTER" layoutX="175.0" layoutY="88.0" prefHeight="156.0" prefWidth="240.0" spacing="8.0" style="-fx-background-color: #262B4110;" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="88.0">
