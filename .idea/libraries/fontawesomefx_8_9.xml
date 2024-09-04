@@ -2,8 +2,17 @@
   <library name="fontawesomefx-8.9">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/fontawesomefx-8.9.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/iText7-Core-7.1.2/kernel-7.1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/iText7-Core-7.1.2/layout-7.1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/iText7-Core-7.1.2/io-7.1.9.jar!/" />
+      <root url="file://$USER_HOME$/Downloads" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$USER_HOME$/Downloads" />
+      <root url="file://$USER_HOME$/Downloads/Hotel-Management-System-Java-master/Hotel-Management-System-Java-master/hotel-management/src" />
+      <root url="file://$USER_HOME$/Downloads/Hotel-Reservations-Modifier-main/Hotel-Reservations-Modifier-main/HotelReservations/src" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/Downloads" recursive="false" type="SOURCES" />
   </library>
 </component>
