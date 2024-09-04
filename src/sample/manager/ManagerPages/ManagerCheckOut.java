@@ -2,20 +2,23 @@ package sample.manager.ManagerPages;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.geometry.Insets;
 import sample._BackEnd.CommonTask;
 import sample._BackEnd.DBConnection;
 import sample._BackEnd.TableView.ManagerCheckInDetailsTable;
@@ -31,6 +34,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -234,28 +238,90 @@ public class ManagerCheckOut extends DBConnection implements Initializable {
                                String pricePerDay, String totalDays, String totalPrice)
             throws FileNotFoundException, DocumentException {
 
-        if (name.equals("Name: ") || roomNo.equals("Room No: ") || checkedInDate.equals("Checked-In Date: ") ||
-                checkedOutDate.equals("Checked-Out Date: ") || pricePerDay.equals("Price per Day: ") ||
-                totalDays.equals("Total Days: ") || totalPrice.equals("Total Price: ")) {
+        if (name.isEmpty() || roomNo.isEmpty() || checkedInDate.isEmpty() ||
+                checkedOutDate.isEmpty() || pricePerDay.isEmpty() || totalDays.isEmpty() || totalPrice.isEmpty()) {
             CommonTask.showAlert(Alert.AlertType.WARNING, "Error", "Some fields are missing. Ensure all fields are filled before saving.");
             return;
         }
 
+        // Generate a unique file name with a timestamp
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String timestamp = sdf.format(Calendar.getInstance().getTime());
+        String fileName = "Bill_Details_" + timestamp + ".pdf";
+
+        // Create a new document
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("Bill_Details.pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream(fileName));
         document.open();
-        document.add(new Paragraph("Bill Details\n"));
-        document.add(new Paragraph(name));
-        document.add(new Paragraph(roomNo));
-        document.add(new Paragraph(checkedInDate));
-        document.add(new Paragraph(checkedOutDate));
-        document.add(new Paragraph(pricePerDay));
-        document.add(new Paragraph(totalDays));
-        document.add(new Paragraph(totalPrice));
+
+        // Add a header
+        Font headerFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
+        Font subHeaderFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font bodyFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
+
+        Paragraph header = new Paragraph("Hotel Spring Mountain", headerFont);
+        header.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(header);
+
+        Paragraph address = new Paragraph("372 Street, PP, Cambodia\nContact: 071 953 3007", bodyFont);
+        address.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(address);
+
+        document.add(new Paragraph(" ")); // Add some space
+
+        // Add the bill title
+        Paragraph billTitle = new Paragraph("Bill Details", subHeaderFont);
+        billTitle.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(billTitle);
+
+        document.add(new Paragraph(" ")); // Add some space
+
+        // Create a table for the bill details
+        PdfPTable table = new PdfPTable(2); // 2 columns
+        table.setWidthPercentage(100);
+        table.setSpacingBefore(10f);
+        table.setSpacingAfter(10f);
+
+        // Table header
+        PdfPCell cell = new PdfPCell(new Paragraph("Description", subHeaderFont));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Details", subHeaderFont));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+        table.addCell(cell);
+
+        // Add table rows
+        addTableRow(table, "Name", name, bodyFont);
+        addTableRow(table, "Room No", roomNo, bodyFont);
+        addTableRow(table, "Checked-In Date", checkedInDate, bodyFont);
+        addTableRow(table, "Checked-Out Date", checkedOutDate, bodyFont);
+        addTableRow(table, "Price per Day", pricePerDay, bodyFont);
+        addTableRow(table, "Total Days", totalDays, bodyFont);
+        addTableRow(table, "Total Price", totalPrice, bodyFont);
+
+        // Add the table to the document
+        document.add(table);
+
+        // Close the document
         document.close();
-        System.out.println("PDF Saved Successfully");
+
+        System.out.println("PDF Saved Successfully as " + fileName);
         CommonTask.showAlert(Alert.AlertType.INFORMATION, "Success", "PDF saved successfully!");
     }
+
+
+    private void addTableRow(PdfPTable table, String description, String details, Font font) {
+        PdfPCell cell = new PdfPCell(new Paragraph(description, font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph(details, font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        table.addCell(cell);
+    }
+
+
 
     private void clearTextFields() {
         nameField.setText("");
